@@ -1,0 +1,7 @@
+{
+  "name":"undefinedfr/cookie-notice",
+  "version": "1.0.0",
+  "type": "wordpress-plugin",
+  "description": "RGPD WordPress Plugin",
+  "license": "GPL-3.0-or-later"
+}
