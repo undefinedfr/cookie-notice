@@ -66,14 +66,16 @@ class CookieNotice {
         if(!$this->_addPage()){
             add_action( 'admin_notices', [ $this, 'noticeNoAcf' ] );
         } else {
-            register_activation_hook( __FILE__, array($this, 'undfnd_cookie_notice_install') );
+            register_activation_hook( __FILE__, array($this, 'undfndCookieNoticeInstall') );
             add_action( 'acf/init', [ $this, 'addAcfFields' ] );
             add_shortcode( 'cookies_list', [ $this, 'getCookiesList' ] );
-            add_filter( 'plugin_action_links', array( $this, 'add_settings_link' ), 10, 2 );
-            add_action( 'wp_enqueue_scripts', [ $this, 'undfnd_plugin_enqueue' ] );
-            add_action( 'wp_print_scripts', [ $this, 'dequeue_script' ], 100 );
+            add_filter( 'plugin_action_links', array( $this, 'addSettingsLink' ), 10, 2 );
+            add_action( 'wp_enqueue_scripts', [ $this, 'undfndPluginEnqueue' ] );
+            add_action( 'wp_print_scripts', [ $this, 'dequeueScript' ], 100 );
+            add_action( 'plugins_loaded', [$this, 'loadPluginTextDomain'] );
+
             if(!$this->hasCookiesConsent()){
-                add_action( 'wp_footer', [ $this, 'add_cookie_bar_in_footer' ] );
+                add_action( 'wp_footer', [ $this, 'addCookieBarInFooter' ] );
             }
         }
     }
@@ -83,7 +85,7 @@ class CookieNotice {
      *
      * @return void;
      */
-    public function undfnd_cookie_notice_install() {
+    public function undfndCookieNoticeInstall() {
         if($this->_defaultCookieNames){
             update_option( '_options_cookie_names', 'field_5b0c14a85afd0', 'options' );
             update_option( 'options_cookie_names', count($this->_defaultCookieNames), 'options' );
@@ -108,7 +110,7 @@ class CookieNotice {
      *
      * @return void;
      */
-    public function undfnd_plugin_enqueue() {
+    public function undfndPluginEnqueue() {
         $this->_cookiesNames = $this->_getCookiesArray();
 
         wp_enqueue_script( 'undfnd_cookie_notice', UNDFNDPLUGIN_URL . '/assets/dist/undfnd-cookie-notice.js' );
@@ -124,13 +126,17 @@ class CookieNotice {
      *
      * @return void;
      */
-    public function add_cookie_bar_in_footer() {
+    public function addCookieBarInFooter() {
         $html = file_get_contents(UNDFNDPLUGIN_DIR . 'views/cookie-bar.php');
+        $title = get_field('cookie_bar_title', 'option');
+        if(!empty($title)) {
+            $html = str_ireplace('{% cookie-title %}', '<p class="title">' . get_field('cookie_bar_title', 'option') . '</p>', $html);
+        }
         $html = str_ireplace('{% cookie-text %}', get_field('cookie_bar_text', 'option'), $html);
         $html = str_ireplace('{% cookie-page %}', get_field('cookie_page', 'option'), $html);
         $html = str_ireplace('{% cookie-functions-names %}', get_field('cookie_functions_on_accept', 'option'), $html);
-        $html = str_ireplace('{% cookie-accept %}', apply_filters('undfnd_label_cookie_accept', __('J\'accepte tous les cookies')), $html);
-        $html = str_ireplace('{% cookie-more %}', apply_filters('undfnd_label_cookie_decline', __('En savoir plus ou s\'opposer')), $html);
+        $html = str_ireplace('{% cookie-accept %}', apply_filters('undfnd_label_cookie_accept', __('J\'accepte tous les cookies', 'undfd-cookie-notice')), $html);
+        $html = str_ireplace('{% cookie-more %}', apply_filters('undfnd_label_cookie_decline', __('En savoir plus ou s\'opposer', 'undfd-cookie-notice')), $html);
 
         $js = "";
         if (!empty($this->_bannedScripts)) {
@@ -166,8 +172,8 @@ class CookieNotice {
      */
     public function getCookiesList(){
         $cookie_state           = file_get_contents(UNDFNDPLUGIN_DIR . 'views/cookie-state.php');
-        $cookie_text_accept     = apply_filters('undfnd_label_cookie_state_text_accept', __('Vous avez accepté les cookies'));
-        $cookie_text_refuse     = apply_filters('undfnd_label_cookie_state_text_refuse', __('Vous avez refusé les cookies'));
+        $cookie_text_accept     = apply_filters('undfnd_label_cookie_state_text_accept', __('Vous avez accepté les cookies', 'undfd-cookie-notice'));
+        $cookie_text_refuse     = apply_filters('undfnd_label_cookie_state_text_refuse', __('Vous avez refusé les cookies', 'undfd-cookie-notice'));
         $cookie_state_text      = (!empty($_COOKIE['hasConsent']) && $_COOKIE['hasConsent'] == 'true') ? $cookie_text_accept : $cookie_text_refuse;
         $cookie_state_class     = (!empty($_COOKIE['hasConsent']) && $_COOKIE['hasConsent'] == 'true') ? 'accept' : 'refuse';
         $cookie_state           = str_ireplace('{% cookie-state-text %}', $cookie_state_text, $cookie_state);
@@ -182,16 +188,16 @@ class CookieNotice {
             $list .= '<tr>';
             $list .= '<td>' . $cookie['cookie_name'] . '</td>';
             $list .= '<td>' . $cookie['cookie_function'] . '</td>';
-            $list .= '<td>' . __($this->_choices[$cookie['cookie_type']]) . '</td>';
+            $list .= '<td>' . __($this->_choices[$cookie['cookie_type']], 'undfd-cookie-notice') . '</td>';
             $list .= '<td class="cookie-authorize"><input type="checkbox" class="cookie-authorize-input" id="cookie_name_' . $cookie['cookie_name'] . '" name="' . $cookie['cookie_name'] . '" ' . (!in_array($cookie['cookie_name'], $cookiesRefused) ? 'checked' : '') . ' ' . ((bool)$cookie['cookie_force'] ? 'disabled' : '') . '></td>';
             $list .= '<tr>';
         }
         $html = str_ireplace('{% cookies-list %}', $list, $html);
-        $html = str_ireplace('{% cookie-name %}', apply_filters('undfnd_label_cookie_name', __('Nom du cookie')), $html);
-        $html = str_ireplace('{% cookie-function %}', apply_filters('undfnd_label_cookie_function', __('Fonction du cookie')), $html);
-        $html = str_ireplace('{% cookie-type %}', apply_filters('undfnd_label_cookie_type', __('Type')), $html);
-        $html = str_ireplace('{% cookie-more %}', apply_filters('undfnd_label_cookie_decline_list', __('Refuser tous les cookies')), $html);
-        $html = str_ireplace('{% cookie-accept %}', apply_filters('undfnd_label_cookie_accept_list', __('Accepter tous les cookies')), $html);
+        $html = str_ireplace('{% cookie-name %}', apply_filters('undfnd_label_cookie_name', __('Nom du cookie', 'undfd-cookie-notice')), $html);
+        $html = str_ireplace('{% cookie-function %}', apply_filters('undfnd_label_cookie_function', __('Fonction du cookie', 'undfd-cookie-notice')), $html);
+        $html = str_ireplace('{% cookie-type %}', apply_filters('undfnd_label_cookie_type', __('Type', 'undfd-cookie-notice')), $html);
+        $html = str_ireplace('{% cookie-more %}', apply_filters('undfnd_label_cookie_decline_list', __('Refuser tous les cookies', 'undfd-cookie-notice')), $html);
+        $html = str_ireplace('{% cookie-accept %}', apply_filters('undfnd_label_cookie_accept_list', __('Accepter tous les cookies', 'undfd-cookie-notice')), $html);
         $html = str_ireplace('{% cookie-authorize %}', apply_filters('undfnd_label_cookie_authorize', '✔'), $html);
         $html = str_ireplace('{% cookie-page %}', get_field('cookie_page', 'option'), $html);
         $html = str_ireplace('{% cookie-state %}', $cookie_state, $html);
@@ -205,7 +211,7 @@ class CookieNotice {
      *
      * @return void;
      */
-    public function dequeue_script($handle) {
+    public function dequeueScript($handle) {
         if(is_admin())
             return;
 
@@ -237,13 +243,23 @@ class CookieNotice {
      * @return array
      *
      */
-    public function add_settings_link( $links, $file ) {
+    public function addSettingsLink( $links, $file ) {
         if ( $file === $this->_menuSlug . '/' . $this->_menuSlug . '.php' && current_user_can( 'manage_options' ) ) {
-            $settings_link = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=' . $this->_menuSlug ), __( 'Settings' ) );
+            $settings_link = sprintf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=' . $this->_menuSlug ), __('Settings', 'undfd-cookie-notice') );
             array_unshift( $links, $settings_link );
         }
 
         return $links;
+    }
+
+    /**
+     * Load plugin textdomain
+     *
+     * @return void;
+     */
+    public function loadPluginTextDomain()
+    {
+        load_plugin_textdomain( 'undfd-cookie-notice', FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
     }
 
     /**
@@ -312,6 +328,25 @@ class CookieNotice {
                 'key' => 'group_5b0835bd91f1a',
                 'title' => 'RGPD',
                 'fields' => array (
+                    array (
+                        'key' => 'field_5b0835c1adf14',
+                        'label' => 'Titre du bandeau cookie',
+                        'name' => 'cookie_bar_title',
+                        'type' => 'text',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => 0,
+                        'wrapper' => array (
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ),
+                        'default_value' => '',
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '',
+                        'maxlength' => '',
+                    ),
                     array (
                         'key' => 'field_5b0835c1adf15',
                         'label' => 'Texte du bandeau cookie',

@@ -1,6 +1,7 @@
 <div id="cookie-container">
     <div id="cookie-banner" class="cookie-banner">
         <div class="text">
+            {% cookie-title %}
             {% cookie-text %}
             <div class="list-button">
                 <button id="cookie-accept" name="cookie-accept" class="bouton bouton-green wow fadeInLeft">{% cookie-accept %}</button>
