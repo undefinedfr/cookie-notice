@@ -1,5 +1,5 @@
 /*
- * 2017 Colorz
+ * 2017 Undefined
  * @author Nicolas Riviere
  */
 module.exports = function(grunt) {
