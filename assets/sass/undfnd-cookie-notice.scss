@@ -1,0 +1,156 @@
+// Le bandeau cookie
+.cookie-banner {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border-top: solid 1px  rgb(232, 232, 232);
+  color: #000;
+  z-index: 9999;
+
+  .text{
+    width: 1170px;
+    font-size: 13px;
+    text-align: center;
+    max-width: 100%;
+    line-height: 26px;
+    margin: 0 auto;
+    padding: 10px 20px;
+  }
+
+  &.active {
+    display: block;
+  }
+
+  .list-button {
+    display: inline-block;
+  }
+}
+
+.cookie-banner .list-button, .cookie-list {
+  a,
+  button{
+    padding: 6px 20px;
+    border: none;
+    color: #FFF;
+    cursor: pointer;
+    line-height: normal;
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 13px;
+    transition: background-color .3s;
+    -webkit-transition: background-color .3s;
+    -moz-transition: background-color .3s;
+    -ms-transition: background-color .3s;
+
+    &#cookie-accept{
+      background-color: #74b04e;
+    }
+    &#cookie-more-button{
+      background-color: #aeaeae;
+
+      &.cookie-refuse{
+        background-color: #d61a14;
+      }
+    }
+
+    &:hover,
+    &:active,
+    &:focus{
+      text-decoration: none;
+      outline: none;
+
+      &#cookie-accept{
+        background-color: #609345;
+      }
+      &#cookie-more-button{
+        background-color: #8f8f8f;
+
+        &.cookie-refuse{
+          background-color: #b01913;
+        }
+      }
+    }
+  }
+}
+
+.cookie-list{
+  a,
+  button{
+    &#cookie-accept,
+    &#cookie-more-button.cookie-refuse,
+    &#cookie-more-button{
+      margin-top: 20px;
+      margin-left: 0;
+      margin-right: 10px;
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+  table{
+    margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
+
+    tr{
+      width: 100%;
+      border-bottom: 3px solid #e7e9e9;
+
+      th, td{
+        text-align: left;
+        padding: 10px;
+        color: #404345;
+      }
+
+      th{
+        font-weight: bold;
+      }
+    }
+
+    tbody tr{
+      border-bottom: 1px solid #e7e9e9;
+    }
+  }
+
+  .cookie-authorize{
+    text-align: center
+  }
+}
+
+@media (max-width: 1158px) {
+  .cookie-bar .list-button {
+    display: block;
+    margin-top: 15px;
+  }
+}
+
+.cookie-state{
+  margin-top: 15px;
+  font-size: 13px;
+
+  .led, .text{
+    display: inline-block;
+    vertical-align: middle;
+    color: #74b04e;
+  }
+
+  .led{
+    height: 5px;
+    width: 5px;
+    background-color: #74b04e;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+
+  &.refuse{
+    .led{
+      background-color: #d61a14;
+    }
+    .text{
+      color: #d61a14;
+    }
+  }
+}
