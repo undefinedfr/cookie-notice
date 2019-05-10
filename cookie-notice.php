@@ -129,9 +129,8 @@ class CookieNotice {
     public function addCookieBarInFooter() {
         $html = file_get_contents(UNDFNDPLUGIN_DIR . 'views/cookie-bar.php');
         $title = get_field('cookie_bar_title', 'option');
-        if(!empty($title)) {
-            $html = str_ireplace('{% cookie-title %}', '<p class="title">' . get_field('cookie_bar_title', 'option') . '</p>', $html);
-        }
+        $title = !empty($title) ? '<p class="title">' . $title . '</p>' : null;
+        $html = str_ireplace('{% cookie-title %}', $title, $html);
         $html = str_ireplace('{% cookie-text %}', get_field('cookie_bar_text', 'option'), $html);
         $html = str_ireplace('{% cookie-page %}', get_field('cookie_page', 'option'), $html);
         $html = str_ireplace('{% cookie-functions-names %}', get_field('cookie_functions_on_accept', 'option'), $html);
