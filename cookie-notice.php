@@ -3,7 +3,7 @@
   Plugin Name: Cookie Notice
   Plugin URI: https://undefined.fr
   Description: Plugin de conformité à la réforme RGPD
-  Version: 1.0.0
+  Version: 1.0.3
   Author: Undefined (RIVIERE Nicolas)
   Author URI: https://undefined.fr
  */
@@ -116,7 +116,8 @@ class CookieNotice {
         wp_enqueue_script( 'undfnd_cookie_notice', UNDFNDPLUGIN_URL . '/assets/dist/undfnd-cookie-notice.js' );
         wp_localize_script( 'undfnd_cookie_notice', 'cookieArgs', [
             "cookiesNames"      => array_values($this->_cookiesNames),
-            "cookieDuration"    => get_field('cookie_duration', 'option')
+            "cookieDuration"    => get_field('cookie_duration', 'option'),
+            "cookieDelay"       => get_field('cookie_bar_delay', 'option'),
         ] );
         wp_enqueue_style( 'undfnd_cookie_notice', UNDFNDPLUGIN_URL . '/assets/css/undfnd-cookie-notice.css' );
     }
@@ -327,6 +328,25 @@ class CookieNotice {
                 'key' => 'group_5b0835bd91f1a',
                 'title' => 'RGPD',
                 'fields' => array (
+                    array (
+                        'key' => 'field_5b0835c1add19',
+                        'label' => 'Delai avant apparition (en secondes)',
+                        'name' => 'cookie_bar_delay',
+                        'type' => 'text',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => 0,
+                        'wrapper' => array (
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ),
+                        'default_value' => '0',
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '',
+                        'maxlength' => '',
+                    ),
                     array (
                         'key' => 'field_5b0835c1adf14',
                         'label' => 'Titre du bandeau cookie',

@@ -16,11 +16,14 @@ Plugin de conformité à la norme RGPD.
 * Envoi d'un évent JS à l'acceptation
 * Scripts à bloquer avant acceptation des cookies
 
-[1.1.0]
+[1.0.1]
 * Autoriser certains cookies (supression au window.load)
 
-[1.1.1]
+[1.0.2]
 * Possibilité de forcer l'acception des cookies au scroll
+
+[1.0.3]
+* Choisir le délai en secondes avant apparition de la barre de cookies
 
 ### Requis
 

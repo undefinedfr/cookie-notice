@@ -5,3 +5,6 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Init repository
 - Initial features (cf README.md)
+
+## [1.0.1]
+- Add cookie delay apparition

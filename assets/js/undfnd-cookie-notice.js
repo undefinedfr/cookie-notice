@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const cookieCancelButton    = document.getElementById('cookie-more-button');
     const cookiesNames          = cookieArgs.cookiesNames;
     const cookieDuration        = cookieArgs.cookieDuration;
+    const cookieDelay           = cookieArgs.cookieDelay;
 
     var CookieNotice = function(){
         var self = this;
@@ -74,8 +75,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if(!cookieBanner)
                 return;
 
-            cookieContainer.classList.add('active');
-            cookieBanner.classList.add('active');
+            setTimeout(function() {
+                cookieContainer.classList.add('active');
+                cookieBanner.classList.add('active');
+                document.body.classList.add('cookie-banner-active');
+            }, cookieDelay * 1000);
             document.addEventListener('click', self.onDocumentClick, false);
         };
 
@@ -148,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             cookieBanner.className = cookieBanner.className.replace('active', '').trim();
             cookieContainer.className = cookieContainer.className.replace('active', '').trim();
+            document.body.className = document.body.className.replace('cookie-banner-active', '').trim();
 
             // Remove old events
             document.removeEventListener('click', self.onDocumentClick, false);
