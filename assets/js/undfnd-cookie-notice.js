@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const cookiesNames          = cookieArgs.cookiesNames;
     const cookieDuration        = cookieArgs.cookieDuration;
     const cookieDelay           = cookieArgs.cookieDelay;
+    const cookieDocumentClick   = cookieArgs.cookieDocumentClick;
 
     var CookieNotice = function(){
         var self = this;
@@ -79,8 +80,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 cookieContainer.classList.add('active');
                 cookieBanner.classList.add('active');
                 document.body.classList.add('cookie-banner-active');
+
+                if(cookieDocumentClick)
+                    document.addEventListener('click', self.onDocumentClick, false);
+
             }, cookieDelay * 1000);
-            document.addEventListener('click', self.onDocumentClick, false);
         };
 
         /**
@@ -133,8 +137,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
             }
 
             var reload = jsCookie.getCookie('hasConsent') === 'false';
-
-            event.preventDefault();
 
             self._acceptCookies();
 

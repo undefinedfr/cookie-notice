@@ -25,6 +25,12 @@ Plugin de conformité à la norme RGPD.
 [1.0.3]
 * Choisir le délai en secondes avant apparition de la barre de cookies
 
+[1.1.0]
+* Possibilité d'ajouter un titre
+* Possibilité de traduire
+* Possibilité de surcharger les templates de vues
+* Possibilité de cacher la banniere au click en dehors de celle-ci
+
 ### Requis
 
 * Module ACF PRO
