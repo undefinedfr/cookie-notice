@@ -607,7 +607,7 @@ class CookieNotice {
                         array (
                             'param' => 'options_page',
                             'operator' => '==',
-                            'value' => 'undfd-cookie-notice',
+                            'value' => 'cookie-notice',
                         ),
                     ),
                 ),
