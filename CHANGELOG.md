@@ -13,10 +13,13 @@ All notable changes to this project will be documented in this file.
 - Add possibility to force acceptance on window scroll
 
 [1.0.3]
-* Add cookie delay apparition
+- Add cookie delay apparition
 
 [1.1.0]
 - Add title to banner
 - Translation support
 - Theme template override
 - Document click support
+
+[1.1.1]
+- Rename translations files

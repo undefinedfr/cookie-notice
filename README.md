@@ -31,6 +31,9 @@ Plugin de conformité à la norme RGPD.
 * Possibilité de surcharger les templates de vues
 * Possibilité de cacher la banniere au click en dehors de celle-ci
 
+[1.1.1]
+* Rename translations files
+
 ### Requis
 
 * Module ACF PRO
