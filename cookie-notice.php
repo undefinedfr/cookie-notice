@@ -112,6 +112,7 @@ class CookieNotice {
             "cookieDuration"        => get_field('cookie_duration', 'option'),
             "cookieDocumentClick"   => get_field('cookie_document_click', 'option'),
             "cookieForceScroll"     => get_field('cookie_force_scroll', 'option'),
+            "cookieDelay"           => get_field('cookie_delay', 'option'),
         ] );
         wp_enqueue_style( 'undfnd_cookie_notice', UNDFNDPLUGIN_URL . '/assets/css/undfd-cookie-notice.css' );
     }
@@ -382,6 +383,25 @@ class CookieNotice {
                         'allow_null' => 0,
                         'allow_archives' => 1,
                         'multiple' => 0,
+                    ),
+                    array (
+                        'key' => 'field_5b0835c1adf90',
+                        'label' => 'Afficher la barre au bout de X secondes',
+                        'name' => 'cookie_delay',
+                        'type' => 'text',
+                        'instructions' => '',
+                        'required' => 0,
+                        'conditional_logic' => 0,
+                        'wrapper' => array (
+                            'width' => '',
+                            'class' => '',
+                            'id' => '',
+                        ),
+                        'default_value' => 0,
+                        'placeholder' => '',
+                        'prepend' => '',
+                        'append' => '',
+                        'maxlength' => '',
                     ),
                     array (
                         'key' => 'field_5b0c14a85afd0',

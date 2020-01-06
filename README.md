@@ -34,6 +34,9 @@ Plugin de conformité à la norme RGPD.
 [1.1.1]
 * Rename translations files
 
+[1.1.2]
+* Add cookie bar delay config
+
 ### Requis
 
 * Module ACF PRO
