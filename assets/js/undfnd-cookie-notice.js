@@ -129,6 +129,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
          * @param event
          */
         self.onDocumentClick = function(event) {
+
             if ((event.target.id === 'cookie-banner'
                     || event.target.parentNode.id === 'cookie-banner'
                     || event.target.parentNode.parentNode.id === 'cookie-banner'
@@ -152,9 +153,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if(!cookieBanner)
                return;
 
-            cookieBanner.className = cookieBanner.className.replace('active', '').trim();
-            cookieContainer.className = cookieContainer.className.replace('active', '').trim();
-            document.body.className = document.body.className.replace('cookie-banner-active', '').trim();
+            cookieBanner.classList.remove('active');
+            cookieContainer.classList.remove('active');
+            document.body.classList.remove('cookie-banner-active');
 
             // Remove old events
             document.removeEventListener('click', self.onDocumentClick, false);

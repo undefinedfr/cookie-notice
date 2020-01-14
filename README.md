@@ -37,6 +37,9 @@ Plugin de conformité à la norme RGPD.
 [1.1.2]
 * Add cookie bar delay config
 
+[1.1.3]
+- Edit assets
+
 ### Requis
 
 * Module ACF PRO
