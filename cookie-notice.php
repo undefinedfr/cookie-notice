@@ -125,9 +125,9 @@ class CookieNotice {
     public function addCookieBarInFooter() {
         $template   = apply_filters('undfnd_cookie_bar_template_path', UNDFNDPLUGIN_DIR . 'views/cookie-bar.php');
         $html       = file_get_contents($template);
-        $html       = str_ireplace('{% cookie-title %}', get_field('cookie_bar_title', 'option'), $html);
-        $html       = str_ireplace('{% cookie-text %}', get_field('cookie_bar_text', 'option'), $html);
-        $html       = str_ireplace('{% cookie-page %}', get_field('cookie_page', 'option'), $html);
+        $html       = str_ireplace('{% cookie-title %}', apply_filters('undfnd_label_cookie_bar_title',get_field('cookie_bar_title', 'option')), $html);
+        $html       = str_ireplace('{% cookie-text %}', apply_filters('undfnd_label_cookie_bar_text',get_field('cookie_bar_text', 'option')), $html);
+        $html       = str_ireplace('{% cookie-page %}', apply_filters('undfnd_label_cookie_page',get_field('cookie_page', 'option')), $html);
         $html       = str_ireplace('{% cookie-functions-names %}', get_field('cookie_functions_on_accept', 'option'), $html);
         $html       = str_ireplace('{% cookie-accept %}', apply_filters('undfnd_label_cookie_accept', __('I accept all cookies', 'undfd-cookie-notice')), $html);
         $html       = str_ireplace('{% cookie-more %}', apply_filters('undfnd_label_cookie_decline', __('Learn more or refuse', 'undfd-cookie-notice')), $html);
