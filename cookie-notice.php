@@ -59,6 +59,8 @@ class CookieNotice {
 
 
     public function __construct(){
+        add_filter( 'site_transient_update_plugins', [ $this, 'removeUpdateNotifications'] );
+
         if(!$this->_addPage()){
             add_action( 'admin_notices', [ $this, 'noticeNoAcf' ] );
         } else {
@@ -96,6 +98,11 @@ class CookieNotice {
                 update_option('options_cookie_names_' . $k . '_cookie_type', !empty($cookie['cookie_type']) ? $cookie['cookie_type'] : null);
             }
         }
+    }
+
+    public function removeUpdateNotifications( $value ) {
+        unset( $value->response['cookie-notice/cookie-notice.php'] );
+        return $value;
     }
 
     /**
